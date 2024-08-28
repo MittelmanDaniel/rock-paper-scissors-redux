@@ -18,11 +18,17 @@ function getHumanChoice(){
 
 }
 
+const playerDisplay = document.querySelector('#player')
+const botDisplay = document.querySelector('#bot')
+const winner = document.querySelector('#winner')
 
+let playerScore = 0
+let botScore = 0
 
-function playRound(humanChoice, computerChoice){
+function playRound(humanChoice){
+
     humanChoice = humanChoice.toLowerCase()
-
+    computerChoice = getComputerChoice()
     let options = ["rock", "paper", "scissors"]
 
     human_ind = options.indexOf(humanChoice)
@@ -30,40 +36,47 @@ function playRound(humanChoice, computerChoice){
 
     if(human_ind == computer_ind){
         console.log(`It's a tie! You both chose ${computerChoice}`)
-        return [0,0]
+        
     }
     else if(human_ind == (computer_ind+1)%3){
         
         console.log(`You win! ${humanChoice} beats ${computerChoice}`)
-        return [1,0]
+        playerScore++
+        playerDisplay.innerText = 'Your Score: ' + playerScore
     }
     else{
         
         console.log(`You Lose! ${computerChoice} beats ${humanChoice}`)
-        return [0,1]
+        
+        botScore++
+
+        botDisplay.innerText = 'Bot Score: ' + botScore
+
     }
+    if(playerScore >= 5){
+        winner.innerText = 'YOU WIN'
+    }
+    else if(botScore >=5){
+        winner.innerText = 'YOU LOST'
+    }
+
 
 }
 
 
 
 
-function playGame(num_rounds){
 
-    let humanScore = 0
-    let computerScore = 0
+const rock = document.querySelector('#rock')
 
-    for(let i = 0; i<num_rounds;i++){
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
+rock.addEventListener('click', ()=>{
+    playRound('rock')
+})
 
-        out = playRound(humanSelection, computerSelection);
+const paper = document.querySelector('#paper')
 
-        humanScore += out[0]
-        computerScore +=out[1]
-    }
+paper.addEventListener('click', ()=>{playRound('paper')})
 
-    console.log(`The score was Human: ${humanScore}, Computer: ${computerScore}`)
-}
+const scissors = document.querySelector('#scissors')
 
-playGame(5)
+scissors.addEventListener('click', ()=>playRound('scissors'))
